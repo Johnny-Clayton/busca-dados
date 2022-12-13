@@ -1,12 +1,15 @@
 package url;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Scanner;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 
 public class PesquisaURL {
 	
@@ -21,10 +24,12 @@ public class PesquisaURL {
 		
 		Document document = Jsoup.connect(url).get();
 		
-		String html = pegarVersaoHTML(document);
+		String html = pegarVersaoHTML(url);
 		String title = pegarTituloPagina(document);
-		Integer linkExterno = pegarLinkExternoInterno(document);
-		Integer linkInterno = pegarLinkExternoInterno(document);
+		Integer[] link = pegarLinkExternoInterno(document);
+
+		Integer linkExterno = link[0];
+		Integer linkInterno = link[1];
 		
 		System.out.println("Versão HTML: " + html);
 		System.out.println("Titulo da Pagína: " + title);
@@ -32,17 +37,25 @@ public class PesquisaURL {
 		System.out.println("Link Interno: " + linkInterno);
 
 	}
-	public static String pegarVersaoHTML(Document document) {
-		
-		String html = "";
+	public static String pegarVersaoHTML(String urlSite) {
+
 		try {
-			// Trabalhar o para pegar o HTML aqui.
+
+			URL url = new URL(urlSite);
+
+		    BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+
+		    String doctype = reader.readLine();
+		    if(doctype.equalsIgnoreCase("<!DOCTYPE html>"))
+		    	return "HTML 5";
+		    
+		    return "HTML";
+
 		} catch (Exception e) {
-			e.printStackTrace(); //mudar para logeer
-			System.out.println("Erro para pegar a versão HTML da pagina.");
+			e.printStackTrace(); 
+	
+			return "Erro para pegar a versão HTML da pagina.";
 		}
-		
-		return html;
 	}
 	
 	public static String pegarTituloPagina(Document document) {
@@ -51,20 +64,18 @@ public class PesquisaURL {
 		try {
 			title = document.title();
 		} catch (Exception e) {
-			e.printStackTrace();//mudar para logeer
+			e.printStackTrace();
 			System.out.println("Erro para pegar o titulo da pagina.");
 		}
-		
 		return title;
 	}
 	
-	public static Integer pegarLinkExternoInterno(Document document) {
+	public static Integer[] pegarLinkExternoInterno(Document document) {
 		
 		int linkExterno = 0; 
 		int linkInterno = 0;
 		
 		try {
-			// Trabalhar o para pegar o link Externo aqui.
 			Elements links = document.select("a");
 			
 			for(Element e : links)
@@ -79,21 +90,14 @@ public class PesquisaURL {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();//mudar para logeer
+			e.printStackTrace();
 			System.out.println("Erro para pegar os links internos e externos da pagina.");
 		}
-		return linkExterno;
+		
+		Integer[] link = new Integer[2];
+		link[0] = linkExterno;
+		link[1] = linkInterno;
+		
+		return link;
 	}
-	
-	public static String pegarLinkInterno(Document document) {
-		String linkInterno = "";
-		try {
-			// Trabalhar o para pegar o link Interno aqui.
-		} catch (Exception e) {
-			e.printStackTrace();//mudar para logeer
-			System.out.println("Erro para pegar os links internos da pagina.");
-		}
-		return linkInterno;
-	}
-
 }

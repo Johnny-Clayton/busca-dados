@@ -7,8 +7,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Johnny/Downloads/jsoup-1.15.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Johnny/Downloads/apache-log4j-2.19.0-bin/apache-log4j-2.19.0-bin/log4j-1.2-api-2.19.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Johnny/Downloads/apache-log4j-2.19.0-bin/apache-log4j-2.19.0-bin/log4j-osgi-2.19.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Johnny/Downloads/apache-log4j-2.19.0-bin/apache-log4j-2.19.0-bin/log4j-slf4j-impl-2.19.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
